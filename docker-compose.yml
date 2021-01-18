@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  squid:
+    image: sameersbn/squid:3.5.27-2
+    volumes:
+      - ./squid.conf:/etc/squid/squid.conf
+
+  alpine:
+    image: alpine:3.13.0
+    environment:
+     - http_proxy=http://squid:3129
+     - https_proxy=http://squid:3129
+     - HTTP_PROXY=http://squid:3129
+     - HTTPS_PROXY=http://squid:3129
+    depends_on:
+     - squid
+    command: sh /apk-bug.sh
+    volumes:
+      - ./apk-bug.sh:/apk-bug.sh
+
